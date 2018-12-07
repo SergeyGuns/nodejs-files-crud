@@ -14,5 +14,8 @@
     "ejs": "^2.6.1",
     "formidable": "^1.2.1",
     "querystring": "^0.2.0"
+  },
+  "devDependencies": {
+    "prettier": "1.15.3"
   }
 }
