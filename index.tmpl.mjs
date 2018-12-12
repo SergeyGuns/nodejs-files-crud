@@ -1,12 +1,24 @@
 function addPreviewIfImg(file) {
-  let ext;
-  try { ext = file.split('.')[file.split('.').length-1]}
-  catch (e) {console.log(e)}
-  console.log(file,ext)
-  if (['svg', 'jpg', 'png', 'SVG', 'JPG', 'PNG'].indexOf(ext)!==-1) {
+  let ext
+  try {
+    ext = file.split('.')[file.split('.').length - 1]
+  } catch (e) {
+    console.log(e)
+  }
+  console.log(file, ext)
+  if (['svg', 'jpg', 'png', 'SVG', 'JPG', 'PNG'].indexOf(ext) !== -1) {
     return `<img width='50' src='/static/${file}'/>`
-  } 
-  return '';
+  }
+  return ''
+}
+
+export function index() {
+  return `
+  ${header()}
+  <body>
+  ${menu()}
+  </body>
+  `
 }
 
 export function menu() {
@@ -18,7 +30,8 @@ export function menu() {
   <a href='/create'> create </a>
   |
   <a href='/upload'> upload </a>
-`}
+`
+}
 
 export function header() {
   return `
@@ -37,21 +50,24 @@ export function header() {
     })
   </script>
 </head>
-`}
-export const fileList = (files) => `<html lang="en">
+`
+}
+export const fileList = files => `<html lang="en">
 ${header()}
 <body> 
   ${menu()}
   <ul>
-    ${
-      files.map(file => `
+    ${files
+      .map(
+        file => `
         <li> 
-          ${''+addPreviewIfImg(file)} 
+          ${'' + addPreviewIfImg(file)} 
           ${file} 
           [<b data-del="${file}">DELETE</b>]
           [<a download href='/static/${file}'>DOWNLOAD</a>]
-        </li>`).join('\n')
-    }   
+        </li>`,
+      )
+      .join('\n')}   
   </ul>
 </body>
 </html>`
@@ -61,6 +77,7 @@ export function createFile() {
 <html lang="en">
 ${header()}
 <body>
+${menu()}
   <form action="/create" method="post" >
     <input name="filename" type="text"/>
     <textarea name="content"></textarea>
@@ -76,13 +93,12 @@ export function uploadFile() {
 <html lang="en">
 ${header()}
 <body>
+${menu()}
 <form action="/upload" method="post" enctype="multipart/form-data">
   <input type="file" name="filetoupload"><br>
   <input type="submit">
 </form>
 </body>
 </html>
-
   `
 }
-

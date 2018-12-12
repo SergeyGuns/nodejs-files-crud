@@ -4,12 +4,17 @@ import URL from 'url'
 import qs from 'querystring'
 import formidable from 'formidable'
 import path from 'path'
-import { fileList, createFile, uploadFile } from './index.tmpl.mjs'
+import { index, fileList, createFile, uploadFile } from './index.tmpl.mjs'
 const STORE_PATH = './storage'
 const toStr = data => JSON.stringify(data, null, ' ')
 
 function getListener(req, res, url) {
-  if (url.path === '/') {
+  if (url.path === '/' || url.path === '/index.html') {
+    res.writeHead(200, {
+      'Content-Type': 'text/html',
+    })
+    res.write(index())
+    return res.end()
   }
   if (~url.path.indexOf('/static')) {
     const filePath = url.path.replace('/static', STORE_PATH)
@@ -85,6 +90,7 @@ function getListener(req, res, url) {
     return res.end()
   }
 }
+
 //https://www.w3schools.com/nodejs/nodejs_uploadfiles.asp
 function postListener(req, res, url) {
   if (url.path === '/upload') {
